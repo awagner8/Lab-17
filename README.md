@@ -1,3 +1,7 @@
+# Lab 17
+
+## Overview
+
 Your task is to complete the virtual memory simulation in vasim.c.
 
 The system has a 24-bit virtual address space with 4KiB pages, the physical memory has a total
@@ -6,7 +10,7 @@ policy.
 
 ---
 
-**vasim.c**
+## vasim.c
 
 You must complete two functions: get_vpn and allocate_phys_page.
 
@@ -46,7 +50,7 @@ Accesses 1024: Hits: 1015 Faults: 9
 
 ---
 
-**Local Testing and Submission**
+## Local Testing and Submission
 
 ```bash
 python3 test_kit.py ALL
