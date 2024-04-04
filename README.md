@@ -8,8 +8,6 @@ The system has a 24-bit virtual address space with 4KiB pages, the physical memo
 of only 64 pages.  The pagetable is a flat page table that uses a first-in-first-out (FIFO) replacement
 policy.
 
----
-
 ## vasim.c
 
 You must complete two functions: get_vpn and allocate_phys_page.
@@ -47,8 +45,6 @@ Running for 1024 accesses
 
 Accesses 1024: Hits: 1015 Faults: 9
 ```
-
----
 
 ## Local Testing and Submission
 
