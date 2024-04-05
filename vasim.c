@@ -20,14 +20,32 @@ void print_replacement(unsigned int vpn, unsigned int ppn) {
 }
 
 unsigned int get_vpn(unsigned int address) {
-    // TODO: return the virtual page number for the provided address
-    return 0;
+   return address / PAGE_SIZE;
 }
 
 void allocate_phys_page(pte_t *pagetable, unsigned int vpn) {
-    // TODO: Implement the function to allocate a physical page
-    // for the virtual page number
-    return;
+    static unsigned int next_phys_page = 0; // Track the next available physical page number
+    static unsigned int allocation_order[MAX_PHYS_PAGES]; // FIFO queue for allocated pages
+    static int fifo_index = 0; // Index for the FIFO replacement
+
+    if (next_phys_page < MAX_PHYS_PAGES) {
+        // Initial allocation
+        pagetable[vpn].phys_page = next_phys_page;
+        allocation_order[next_phys_page] = vpn; // Keep track of the allocation order
+        next_phys_page++;
+    } else {
+        // FIFO replacement
+        unsigned int old_vpn = allocation_order[fifo_index];
+        unsigned int old_ppn = pagetable[old_vpn].phys_page;
+        pagetable[old_vpn].valid = 0; // Invalidate the old mapping
+        pagetable[vpn].phys_page = old_ppn; // Reuse the physical page for the new VPN
+        allocation_order[fifo_index] = vpn; // Update the allocation order
+        fifo_index = (fifo_index + 1) % MAX_PHYS_PAGES; // Move to the next index in the FIFO queue
+        if (verbose) {
+            print_replacement(old_vpn, old_ppn);
+        }
+    }
+    pagetable[vpn].valid = 1; // Mark the new mapping as valid
 }
 
 
